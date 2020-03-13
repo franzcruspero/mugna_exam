@@ -15,6 +15,9 @@ class Type(models.Model):
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        ordering = ["name"]
 
 class Ability(models.Model):
     name = models.CharField(max_length=100, unique=True, null=True)
@@ -23,11 +26,14 @@ class Ability(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ["name"]
+
 class Pokemon(models.Model):
     pokedex_id = models.IntegerField()
     name = models.CharField(max_length=100, unique=True)
-    height = models.IntegerField(null=True, blank=True, default=1)
-    weight = models.IntegerField(null=True, blank=True, default=1)
+    height = models.FloatField(null=True, blank=True, default=1)
+    weight = models.FloatField(null=True, blank=True, default=1)
     description = models.TextField(max_length=300, null=True, blank=True)
     types = models.ManyToManyField(Type)
     abilities = models.ManyToManyField(Ability)
@@ -44,3 +50,6 @@ class Pokemon(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ["pokedex_id"]
