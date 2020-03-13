@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br>
+<div class="row">
+    <div class="col-md-5 mx-auto my-auto">
+        <form method="GET">
+            {{filter.form}}
+            <button class="btn btn-primary" type="submit">Search</button>
+        </form>
+    </div>
+</div>
+<br><br>
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        {% include "pokedex/paginate.html" %}
+        <br>
+        <table class="table table-striped">
+                <tr>
+                    <th>Pokedex ID</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Action</th>
+                </tr>
+                {% for object in object_list %}
+                <tr>
+                    <td>{{ object.pokedex_id }}</td>
+                    <td>{{ object.name }}</td>
+                    <td>
+                        {% for type in object.types.all %}
+                            {{ type.name|capfirst }}{% if type != object.types.last %},{% endif %} 
+                        {% endfor %}
+                    </td>
+                    <td>
+                        <a class="btn btn-sm btn-info" href="{% url 'pokemon_detail' object.slug %}"> Details </a> 
+                        <a class="btn btn-sm btn-warning" href="{% url 'pokemon_update' object.slug %}"> Update </a>
+                        <a class="btn btn-sm btn-danger" href="{% url 'pokemon_delete' object.slug %}"> Delete </a>
+                    </td>
+                </tr>
+                {% endfor %}
+        </table>
+        {% include "pokedex/paginate.html" %}
+    </div>
+</div>    
+{% endblock %}

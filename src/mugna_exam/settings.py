@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'pokedex',
+    'django_filters',
 ]
 
 MIDDLEWARE = [

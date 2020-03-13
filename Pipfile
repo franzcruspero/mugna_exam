@@ -7,10 +7,11 @@ verify_ssl = true
 
 [packages]
 django = "*"
+psycopg2-binary = "*"
 pylint = "*"
 pylint-django = "*"
-psycopg2 = "*"
 requests = "*"
+django-filter = "*"
 
 [requires]
 python_version = "3.8"
