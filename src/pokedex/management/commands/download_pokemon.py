@@ -105,12 +105,18 @@ class Command(BaseCommand):
                                 'evolves_to'][index]['evolves_to'][index2]['species']['name']:
                             evolution_order = 3
 
+            description_list = [x['flavor_text'] for x in pokemon_species[
+                'flavor_text_entries'] if x['language']['name'] == "en" and x[
+                    'version']['name'] == "yellow"]
+            description = description_list[0].replace('\n', " ")
+            description = description.replace('\x0c', " ")
+
             instance = Pokemon.objects.create(
                 pokedex_id=pokemon['id'],
                 name=pokemon['name'].title(),
                 height=pokemon['height']/10,
                 weight=pokemon['weight']/10,
-                description=pokemon_species['flavor_text_entries'][1]['flavor_text'],
+                description=description,
                 slug=slugify(pokemon['name']),
                 image_url=pokemon['sprites']['front_default'],
                 evolution_id=evolution_chain_id,
