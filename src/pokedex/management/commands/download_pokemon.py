@@ -1,3 +1,4 @@
+import sys
 import requests
 from django.core.management.base import BaseCommand, CommandError
 from django.utils.text import slugify
@@ -5,10 +6,7 @@ from django.utils.text import slugify
 from pokedex.models import Pokemon, Type, Ability
 
 class Command(BaseCommand):
-    help = 'Downloads and stores Generation 1 Pokemon into the pokedex database.'
-
-    # def add_arguments(self, parser):
-    #     parser.add_argument('poll_ids', nargs='+', type=int)
+    help = 'Downloads and stores the Generation 1 Pokemon into the pokedex database.'
 
     def handle(self, *args, **options):
         pokedex_id = 1
@@ -49,7 +47,7 @@ class Command(BaseCommand):
                     headers={"Accept": "application/json"}
                 )
                 type_data = type_response.json()
-                type_name = type_data['name']
+                type_name = type_data['name'].title()
 
                 filter_type = str(Type.objects.filter(name=type_name).first())
                 # Checks if type is already in the table
@@ -132,6 +130,6 @@ class Command(BaseCommand):
                 instance.types.add(item)
             for item in ability_id_list:
                 instance.abilities.add(item)
-            print(pokedex_id)
+            print(f"Downloading {pokemon['name'].title()}..."),
             pokedex_id += 1
         

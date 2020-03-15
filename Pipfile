@@ -12,6 +12,7 @@ pylint = "*"
 pylint-django = "*"
 requests = "*"
 django-filter = "*"
+django-widget-tweaks = "*"
 
 [requires]
 python_version = "3.8"

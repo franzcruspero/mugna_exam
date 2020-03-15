@@ -1,5 +1,8 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="navbar-brand"> Pokedex </div>
+{% load static %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="navbar-brand"> <img src="{% static 'images/pokedex_logo.png' %}" style="width:60px;"> </div>
+    <div class="navbar-brand"> <img src="{% static 'images/pokedex.png' %}" style="width:120px;"> </div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
