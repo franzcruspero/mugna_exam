@@ -3,6 +3,9 @@ from django import forms
 from .models import *
 
 class PokemonAdmin(admin.ModelAdmin):
+    exclude = (
+        'slug',
+    )
     list_display = (
         'pokedex_id',
         'name',
