@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+
+{% block head_title %}
+    {{pokemon.name}} - Details
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto my-auto">
+        <div class="card text-center">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-6">
+                        {% if before_pokemon %}  
+                            {% for data in before_pokemon %}
+                                <a class="btn btn-info" href="{% url 'pokemon_detail' data.slug %}">
+                                    <i class="fas fa-angle-left"></i> {{ data.name }} #{{ data.pokedex_id }} 
+                                </a>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        {% if after_pokemon %}  
+                            {% for data in after_pokemon %}
+                            <a class="btn btn-info" href="{% url 'pokemon_detail' data.slug %}"> 
+                                {{ data.name }} #{{ data.pokedex_id }} <i class="fas fa-angle-right"></i>
+                            </a>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title">
+                    <div class="row">
+                        <div class="col">
+                        <center>
+                            {{object.name}} #{{ object.pokedex_id }}
+                            <div style="text-align: right;">
+                                <a class="btn btn-warning" href="{% url 'pokemon_update' object.slug %}"> Update </a>
+                                <a class="btn btn-danger" href="{% url 'pokemon_delete' object.slug %}"> Delete </a>
+                            </div>
+                        </center>
+                        </div>
+                    </div>
+                </h1>
+                <hr>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="card bg-light">
+                            <center>
+                                <img class="img-fluid" src="{{object.image_url}}" alt="pokemon front" style="width:350px;height:320px;"> 
+                            </center>
+                        </div>
+                        <br>
+                        <table class="table table-bordered table-info">
+                            <tr>
+                                <th>Stats</th>
+                                <th>Value</th>
+                            </tr>
+                            <tr>
+                                <td>Speed</td>
+                                <td>{{ object.speed }}</td>
+                            </tr>
+                            <tr>
+                                <td>Special Defense</td>
+                                <td>{{ object.defense }}</td>
+                            </tr>
+                            <tr>
+                                <td>Special Attack</td>
+                                <td>{{ object.special_attack }}</td>
+                            </tr>
+                            <tr>
+                                <td>Defense</td>
+                                <td>{{ object.defense }}</td>
+                            </tr>
+                            <tr>
+                                <td>Attack</td>
+                                <td>{{ object.attack }}</td>
+                            </tr>
+                            <tr>
+                                <td>HP</td>
+                                <td>{{ object.hp }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-7">
+                        <p> {{object.description}} </p>
+                        <div class="card text-white bg-info mb-3">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5> Height </h5>
+                                    {{object.height}} meters 
+                                    <hr>
+                                    <h5> Weight </h5>
+                                    {{ object.weight }} kg.
+                                </div>
+                                <div class="col-md-6">
+                                    <h5> Types </h5>
+                                    {% for type in object.types.all %}
+                                        {{ type.name|capfirst }}{% if type != object.types.last %},{% endif %} 
+                                    {% endfor %}
+                                    <hr>
+                                    <h5> Abilities </h5>
+                                    {% for ability in object.abilities.all %}
+                                        <li style="display: inline-block; margin-bottom: 5px;">
+                                            <button type="button" class="btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="bottom" title="{{ability.description}}">
+                                                {{ability.name}}
+                                            </button>
+                                        </li>
+                                        {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <h5 style="text-align: left;">Type Effectivenes (When receiving type of attack)</h5>
+                        <table class="table table-bordered table-warning">
+                            <tr>
+                                <th>Effectivenes</th>
+                                <th>Attack Type</th>
+                            </tr>
+                            <tr>
+                                <td> Super effective (4x damage) </td>
+                                <td>
+                                    {% for type in quadruple_damage_list %}
+                                        <li style="display: inline-block; margin-bottom: 5px;">
+                                            <button type="button" class="btn btn-sm btn-secondary">
+                                                {{ type|capfirst }}
+                                            </button>
+                                        </li>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> Very effective (2x damage) </td>
+                                <td>
+                                    {% for type in double_damage_list %}
+                                        <li style="display: inline-block; margin-bottom: 5px;">
+                                            <button type="button" class="btn btn-sm btn-secondary">
+                                                {{ type|capfirst }}
+                                            </button>
+                                        </li>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> Not too effective (1/2 damage) </td>
+                                <td>
+                                    {% for type in half_damage_list %}
+                                        <li style="display: inline-block; margin-bottom: 5px;">
+                                            <button type="button" class="btn btn-sm btn-secondary">
+                                                {{ type|capfirst }}
+                                            </button>
+                                        </li>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> Not very effective (1/4 damage) </td>
+                                <td>
+                                    {% for type in quarter_damage_list %}
+                                        <li style="display: inline-block; margin-bottom: 5px;">
+                                            <button type="button" class="btn btn-sm btn-secondary">
+                                                {{ type|capfirst }}
+                                            </button>
+                                        </li>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> No effect (0 damage) </td>
+                                <td>
+                                    {% for type in no_damage_list %}
+                                        <li style="display: inline-block; margin-bottom: 5px;">
+                                            <button type="button" class="btn btn-sm btn-secondary">
+                                                {{ type|capfirst }}
+                                            </button>
+                                        </li> 
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h2> Evolution Chart </h2>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-dark">
+                        <tr>
+                            {% if first_stage %} <th>First Stage</th> {% endif %}
+                            {% if second_stage %} <th>Second Stage</th> {% endif %}
+                            {% if third_stage %} <th>Last Stage</th> {% endif %}
+                        </tr>
+                        <tr>
+                            {% if first_stage %}
+                            <td>
+                                {% for list in first_stage %}
+                                    {% for pokemon in list %}
+                                    <ul class="list-group">
+                                        <li class="list-group-item bg-dark ">
+                                            <img class="img-fluid" src="{{pokemon.image_url}}" alt="pokemon front" style="width:200px;height:200px;">
+                                            <a class="btn btn-light" href="{% url 'pokemon_detail' pokemon.slug %}"> {{pokemon.name}} #{{pokemon.pokedex_id}} </a>
+                                        </li>   
+                                    </ul>
+                                    {% endfor %}
+                                {% endfor %}
+                            </td>
+                            {% endif %}
+                            {% if second_stage %}
+                            <td>
+                                {% for list in second_stage %}
+                                    {% for pokemon in list %}
+                                    <ul class="list-group">
+                                        <li class="list-group-item bg-dark">
+                                            <img class="img-fluid" src="{{pokemon.image_url}}" alt="pokemon front" style="width:200px;height:200px;">
+                                            <a class="btn btn-light" href="{% url 'pokemon_detail' pokemon.slug %}"> {{pokemon.name}} #{{pokemon.pokedex_id}} </a>
+                                        </li>   
+                                    </ul>
+                                    {% endfor %}
+                                {% endfor %}
+                            </td>
+                            {% endif %}
+                            {% if third_stage %}
+                            <td>
+                                {% for list in third_stage %}
+                                    {% for pokemon in list %}
+                                    <ul class="list-group">
+                                        <li class="list-group-item bg-dark">
+                                            <img class="img-fluid" src="{{pokemon.image_url}}" alt="pokemon front" style="width:200px;height:200px;">
+                                            <a class="btn btn-light" href="{% url 'pokemon_detail' pokemon.slug %}"> {{pokemon.name}} #{{pokemon.pokedex_id}} </a>
+                                        </li>   
+                                    </ul>
+                                    {% endfor %}
+                                {% endfor %}
+                            </td>
+                            {% endif %}
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div> 
+    </div>
+</div>
+{% endblock %}
+
+<script type="text/javascript">
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
+</script>
