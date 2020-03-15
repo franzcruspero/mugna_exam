@@ -1,0 +1,185 @@
+{% load widget_tweaks %}
+
+<form method='POST' action=''>{% csrf_token %}
+    <div class="row">
+        <div class="col-md-6">
+            {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            <strong>Field {{field.name}}: {{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% if form_header == "Create New Pokemon" %}
+                <label class="col-form-label"> New Pokemon or Evolves/Devolves from a Pokemon</label>
+            {% else %}
+                <label class="col-form-label"> Evolves/Devolves from a Pokemon</label>
+            {% endif %}
+            <br>
+            <select class="custom-select" name="evolve_devolve_new" id="evolve_devolve_new" onchange="evolveOrDevolve(this);">
+                {% if form_header == "Create New Pokemon" %}
+                    <option selected value="new"> New Pokemon </option>
+                    <option value="evolve"> Evolves From </option>
+                    <option value="devolve">Devolves from</option>
+                {% else %}
+                    <option selected value=""> Choose Here </option>
+                    <option value="evolve"> Evolves From </option>
+                    <option value="devolve">Devolves from</option>
+                {% endif %}
+            </select>
+        </div>
+        <div id="evolve" style="display: none;">
+            <div class="col-md-6">
+                <label class="col-form-label"> Evolves from </label>
+                <br>
+                <select name="select_pokemon_evolve" id="select_pokemon_evolve" class="selectpicker" data-live-search="true">
+                    {% if form_header == "Create New Pokemon"%}
+                        <option selected value="Bulbasaur">
+                            Bulbasaur
+                        </option>
+                    {% else %}
+                        <option selected value="{{default_pokemon}}">
+                            {{default_pokemon}}
+                        </option>
+                    {% endif %}
+                    {% for pokemon in evolve_pokemon_list %}
+                        <option value="{{pokemon.name}}"> {{pokemon.name}} </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div id="devolve" style="display: none;">
+            <div class="col-md-7">
+                <label class="col-form-label"> Devolves from </label>
+                <br>
+                <select name="select_pokemon_devolve" id="select_pokemon_devolve" class="selectpicker" data-live-search="true">
+                    {% if form_header == "Create New Pokemon"%}
+                        <option selected value="Ivysaur">
+                            Ivysaur
+                        </option>
+                    {% else %}
+                        {% if default_pokemon == None %}
+                            <p>Hello</p>
+                        {% endif %}
+                        <option selected value="{{default_pokemon}}">
+                            {{default_pokemon}}
+                        </option>
+                    {% endif %}
+                    {% for pokemon in devolve_pokemon_list %}
+                        <option value="{{pokemon.name}}"> {{pokemon.name}} </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <center>
+        <h2> Pokemon Details </h2>
+    </center>
+    <div class='row'>
+        {% if form_header != "Create New Pokemon" %}
+            <div class="col-md-3">
+                <label class="col-form-label"> Pokedex ID </label>
+                {{form.pokedex_id | add_class:'form-control'}}
+            </div>
+        {% endif %}
+        <div class="col-md-3">
+            <label class="col-form-label"> Name </label>
+            {{form.name | add_class:'form-control'}}
+        </div>
+        <div class="col-md-3">
+            <label class="col-form-label"> Height </label>
+            {{form.height | add_class:'form-control'}}
+        </div>
+        <div class="col-md-3">
+            <label class="col-form-label"> Weight </label>
+            {{form.weight | add_class:'form-control'}}
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-6">
+            <label class="col-form-label"> Description </label>
+            {{form.description | add_class:'form-control' }}
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-4">
+            <label class="col-form-label"> Select Types </label>
+            {{form.types | add_class:'form-control'}}
+        </div>
+        <div class="col-md-4">
+            <label class="col-form-label"> Select Abilities </label>
+            {{form.abilities | add_class:'form-control' }}
+        </div>
+        <div class="col-md-4">
+            <label for="" class="col-form-label"> Image URL </label>
+            {{form.image_url | add_class:'form-control'}}
+        </div>
+    </div>
+    <hr>
+    <center>
+        <h2> Pokemon Stats </h2>
+    </center>
+    <br>
+    <div class="row">
+        <div class="col-md-4">
+            <label class="col-form-label"> Speed </label>
+            {{form.speed | add_class:'form-control'}}
+        </div>
+        <div class="col-md-4">
+            <label class="col-form-label"> Defense </label>
+            {{form.special_defense | add_class:'form-control'}}
+        </div>
+        <div class="col-md-4">
+            <label class="col-form-label"> Special Attack </label>
+            {{form.special_attack | add_class:'form-control'}}
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-4">
+            <label class="col-form-label"> Defense </label>
+            {{form.defense | add_class:'form-control'}}
+        </div>
+        <div class="col-md-4">
+            <label class="col-form-label"> Attack </label>
+            {{form.attack | add_class:'form-control'}}
+        </div>
+        <div class="col-md-4">
+            <label class="col-form-label"> Hit Points </label>
+            {{form.hp | add_class:'form-control'}}
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col" style="text-align: right;">
+            <button class="btn btn-primary"> Submit </button> 
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    function evolveOrDevolve(that) {
+        if(that.value == "devolve") {
+            document.getElementById("devolve").style.display = "block";
+            document.getElementById("evolve").style.display = "none";
+        }
+        else if(that.value == "evolve") {
+            document.getElementById("evolve").style.display = "block";
+            document.getElementById("devolve").style.display = "none";
+        }
+        else{
+            document.getElementById("evolve").style.display = "none";
+            document.getElementById("devolve").style.display = "none";
+        }
+    }
+</script>
