@@ -1,45 +1,77 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block head_title %}
+    Pokedex - Pokemon List
+{% endblock %}
 
 {% block content %}
-<br>
 <div class="row">
-    <div class="col-md-5 mx-auto my-auto">
-        <form method="GET">
-            {{filter.form}}
-            <button class="btn btn-primary" type="submit">Search</button>
-        </form>
+    <div class="col-md-8 mx-auto my-auto">
+        <div class="card">
+            <div class="card-header">
+                <center>
+                    <img src="{% static 'images/pokemon_list.png' %}" style="width:500px;">
+                </center>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <a class="btn btn-info float-right" href="{% url 'pokemon_create' %}" style="margin-right: 20px;"> Create New Pokemon </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8 mx-auto my-auto">
+                        <br>
+                        <form method="GET">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    {{filter.form.name}}
+                                </div>
+                                <div class="col-md-4">
+                                    {{filter.form.types}}
+                                </div>
+                                <div class="col-md-3">
+                                    <button class="btn btn-primary" type="submit">Search</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-8 mx-auto">
+                        <table class="table table-light table-striped">
+                                <tr>
+                                    <th>Pokedex ID</th>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Action</th>
+                                </tr>
+                                {% for object in object_list %}
+                                <tr>
+                                    <td>{{ object.pokedex_id }}</td>
+                                    <td>{{ object.name }}</td>
+                                    <td>
+                                        {% for type in object.types.all %}
+                                            {{ type.name|capfirst }}{% if type != object.types.last %},{% endif %} 
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-sm btn-info" href="{% url 'pokemon_detail' object.slug %}"> Details </a> 
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                        </table>
+                    </div>
+                </div>    
+                <div class="row">
+                    <div class="col-md-8 mx-auto my-auto">
+                        {% include "pokedex/paginate.html" %}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-<br><br>
-<div class="row">
-    <div class="col-md-8 mx-auto">
-        {% include "pokedex/paginate.html" %}
-        <br>
-        <table class="table table-striped">
-                <tr>
-                    <th>Pokedex ID</th>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Action</th>
-                </tr>
-                {% for object in object_list %}
-                <tr>
-                    <td>{{ object.pokedex_id }}</td>
-                    <td>{{ object.name }}</td>
-                    <td>
-                        {% for type in object.types.all %}
-                            {{ type.name|capfirst }}{% if type != object.types.last %},{% endif %} 
-                        {% endfor %}
-                    </td>
-                    <td>
-                        <a class="btn btn-sm btn-info" href="{% url 'pokemon_detail' object.slug %}"> Details </a> 
-                        <a class="btn btn-sm btn-warning" href="{% url 'pokemon_update' object.slug %}"> Update </a>
-                        <a class="btn btn-sm btn-danger" href="{% url 'pokemon_delete' object.slug %}"> Delete </a>
-                    </td>
-                </tr>
-                {% endfor %}
-        </table>
-        {% include "pokedex/paginate.html" %}
-    </div>
-</div>    
 {% endblock %}

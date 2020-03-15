@@ -1,29 +1,27 @@
-<div class="col-md-5 mx-auto">
-    <div class="pagination">
-        <span class="step-links">
-            {% if is_paginated %}
-                <nav aria-label="Page">
-                    <ul class="pagination justify-content-left">
-                        {% if page_obj.has_previous %}
-                            <li class="page-item"><a class="page-link" href="?{{ queries.urlencode }}&amp;page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+<div class="pagination">
+    <span class="step-links">
+        {% if is_paginated %}
+            <nav aria-label="Page">
+                <ul class="pagination justify-content-left">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?{{ queries.urlencode }}&amp;page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                    {% else %}
+                        <li class="page-item disabled"><a class="page-link" href="#"><span>&laquo;</span></a></li>
+                    {% endif %}
+                    {% for i in paginator.page_range %}
+                        {% if page_obj.number == i %}
+                            <li class="page-item active"><a class="page-link" href="#">{{ i }} <span class="sr-only">(current)</span></a></li>
                         {% else %}
-                            <li class="page-item disabled"><a class="page-link" href="#"><span>&laquo;</span></a></li>
+                            <li class="page-item"><a class="page-link" href="?{{ queries.urlencode }}&amp;page={{ i }}">{{ i }}</a></li>
                         {% endif %}
-                        {% for i in paginator.page_range %}
-                            {% if page_obj.number == i %}
-                                <li class="page-item active"><a class="page-link" href="#">{{ i }} <span class="sr-only">(current)</span></a></li>
-                            {% else %}
-                                <li class="page-item"><a class="page-link" href="?{{ queries.urlencode }}&amp;page={{ i }}">{{ i }}</a></li>
-                            {% endif %}
-                        {% endfor %}
-                        {% if page_obj.has_next %}
-                            <li class="page-item"><a class="page-link" href="?{{ queries.urlencode }}&amp;page={{ page_obj.next_page_number }}">&raquo;</a></li>
-                        {% else %}
-                            <li class="page-item disabled"><a class="page-link" href="#"><span>&raquo;</span></a></li>
-                        {% endif %}
-                    </ul>
-                </nav>
-            {% endif %}
-        </span>
-    </div>
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <li class="page-item"><a class="page-link" href="?{{ queries.urlencode }}&amp;page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                    {% else %}
+                        <li class="page-item disabled"><a class="page-link" href="#"><span>&raquo;</span></a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+    </span>
 </div>
