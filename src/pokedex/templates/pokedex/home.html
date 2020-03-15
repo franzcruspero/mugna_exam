@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head_title %}
+    Pokedex - Home Page
+{% endblock %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-8 mx-auto my-auto">
+            <div class="card">
+                <div class="card-header">
+                    <center>
+                        <img class="" src="{% static 'images/pokedex_logo.png' %}" style="width:300px;">
+                        <img src="{% static 'images/pokedex.png' %}" style="width:300px;">
+                    </center>
+                </div>
+                <div class="card-body">
+                    <p class="lead">
+                        Welcome to the Pokedex App! 
+                        It contains all Generation 1 Pokemon while utlizing data from PokeAPI and stored
+                        it inside the database. 
+                        <br><br>
+                        Feautres include:
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                Lists all Pokemon
+                            </li>
+                            <li class="list-group-item">
+                                View the details of a specific Pokemon
+                            </li>
+                            <li class="list-group-item">
+                                Search an existing Pokemon by name and filter Pokemon by type
+                            </li>
+                            <li class="list-group-item">
+                                Add a new Pokemon
+                            </li>
+                            <li class="list-group-item">
+                                Update an existing Pokemon
+                            </li>
+                            <li class="list-group-item">
+                                Delete an exising Pokemon
+                            </li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
