@@ -50,4 +50,6 @@ pipenv install
 cd src/ 
 
 python manage.py download_pokemon
+
+python manage.py runserver
 ```
